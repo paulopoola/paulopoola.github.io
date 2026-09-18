@@ -1,297 +1,938 @@
-<!DOCTYPE HTML>
-
-<html>
-
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
 <head>
-	<title>Paul Opoola</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" />
-	</noscript>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oluwafemi (Femi) Opoola | Aircraft Structural Engineering Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0d1117',
+                            800: '#161b22',
+                            700: '#21262d',
+                            600: '#30363d'
+                        },
+                        cyan: {
+                            accent: '#00f2fe',
+                            glow: '#38bdf8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow-x: hidden;
+        }
+
+        .card-clean {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 0.75rem;
+            transition: all 0.25s ease;
+        }
+
+        .card-clean:hover {
+            border-color: #00f2fe;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.08);
+        }
+
+        .accent-glow {
+            text-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f2fe;
+        }
+
+        canvas {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+    </style>
 </head>
+<body class="selection:bg-cyan-500 selection:text-slate-950">
 
-<body class="is-preload">
+    <header class="fixed top-0 left-0 w-full z-50 bg-[#0d1117]/90 backdrop-blur-md border-b border-[#30363d] h-16 flex items-center">
+        <div class="max-w-6xl mx-auto px-4 w-full flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-2.5 font-mono text-sm tracking-tight font-bold text-white hover:text-[#00f2fe] transition-colors">
+                <span class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 text-slate-950 flex items-center justify-center font-bold text-xs">PO</span>
+                <span>FEMI OPOOLA</span>
+            </a>
 
-	<!-- Sidebar -->
-	<section id="sidebar">
-		<div class="inner">
-			<nav>
-				<ul>
-					<li><a href="#intro">Paul Opoola</a></li>
-					<li><a href="#two">SKILLS</a></li>
-					<li><a href="#one">PROJECTS</a></li>
-					<li><a href="#three">CONTACT</a></li>
-				</ul>
-			</nav>
-		</div>
-	</section>
+            <nav class="hidden md:flex items-center gap-6 font-mono text-xs">
+                <a href="#transition" class="text-slate-400 hover:text-[#00f2fe] transition-colors">Capabilities</a>
+                <a href="#fleet" class="text-slate-400 hover:text-[#00f2fe] transition-colors">Aircraft Fleet</a>
+                <a href="#tools" class="text-slate-400 hover:text-[#00f2fe] transition-colors">Engineering Tools</a>
+                <a href="#projects" class="text-slate-400 hover:text-[#00f2fe] transition-colors">Projects</a>
+                <a href="#skills" class="text-slate-400 hover:text-[#00f2fe] transition-colors">Skills</a>
+                <a href="#contact" class="px-3.5 py-1.5 rounded-md border border-[#00f2fe]/40 text-[#00f2fe] hover:bg-[#00f2fe]/10 transition-all font-semibold">Contact</a>
+            </nav>
 
-	<!-- Wrapper -->
-	<div id="wrapper">
+            <button id="menu-btn" class="md:hidden text-slate-300 text-lg focus:outline-none" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
 
-		<!-- Intro -->
-		<section id="intro" class="wrapper style1 fullscreen fade-up">
-			<center><img src="images/paul.png" width='20%' height=20% style='border-radius: 500px;' />
+        <div id="mobile-nav" class="hidden md:hidden fixed inset-x-0 top-16 bg-[#161b22] border-b border-[#30363d] px-6 py-4 flex flex-col gap-3 font-mono text-xs">
+            <a href="#transition" class="m-link text-slate-300 hover:text-[#00f2fe]">Capabilities</a>
+            <a href="#fleet" class="m-link text-slate-300 hover:text-[#00f2fe]">Aircraft Fleet</a>
+            <a href="#tools" class="m-link text-slate-300 hover:text-[#00f2fe]">Engineering Tools</a>
+            <a href="#projects" class="m-link text-slate-300 hover:text-[#00f2fe]">Projects</a>
+            <a href="#skills" class="m-link text-slate-300 hover:text-[#00f2fe]">Skills</a>
+            <a href="#contact" class="m-link text-[#00f2fe] font-bold">Contact</a>
+        </div>
+    </header>
 
-				<div class="inner">
-					<h1>Paul Opoola</h1>
-					<p> I'm a Data Analyst with a strong quantitative background and have obtained a learning
-						experienced in preparing and interpreting statistical data. More Skilled in MS Excel,
-						SQL,Tableau and Python</p>
-					<a href="generic.html" class="button scrolly">More</a>
-					<!--<ul class="actions">
-						<li><a href="#one" class="button scrolly">Learn more</a></li>
-					</ul>> -->
-				</div>
-			</center>
-		</section>
+    <section id="hero" class="pt-28 pb-16 max-w-6xl mx-auto px-4">
+        <div class="max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#161b22] border border-[#30363d] text-xs font-mono text-[#00f2fe]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] animate-pulse"></span>
+                <span>AME-Structures &rarr; Aircraft Structural Engineering</span>
+            </div>
 
-		<!-- SKILLS (ID=2nd)-->
-		<section id="two" class="wrapper style3 fade-up">
-			<div class="inner">
-				<div style="text-align:center;">
-					<h2>SKILLS AND CERTIFICATIONS</h2>
-				</div>
-				<!-- <p> talk about skills</p> -->
-				<div class="features">
-					<section>
-						<span class="icon solid major fa-desktop"></span>
-						<h3>Microsoft Excel</h3>
-						<!-- <p>Organize data, Creating pivot tables, vlookups, pulling data monthly & quarterly, creating
-							dashboards</p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-desktop"></span>
-						<h3>Google Spreadsheet</h3>
-						<!-- <p>Organize data, Creating pivot tables, vlookups, pulling data monthly & quarterly, creating
-							dashboards</p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-desktop"></span>
-						<h3>Tableau</h3>
-						<!-- <p>For Data Vizualization and reports.</p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-code"></span>
-						<h3>Python</h3>
-						<!-- <p> </p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-code"></span>
-						<h3>R</h3>
-					<!--	<p></p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-code"></span>
-						<h3>SQL and Google BigQuery</h3>
-						<!-- <p>Experience with database tools like MySQL server, SQL a.</p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-desktop"></span>
-						<h3>Power BI</h3>
-						<!--	<p></p> -->
-					</section>
-					<section>
-						<span class="icon solid major fa-code"></span>
-						<h3>SAS</h3>
-						<!--	<p></p> -->
-					</section>
-					<section>
-						<span class="icon major fa-gem"></span>
-						<h3><a href="https://www.coursera.org/account/accomplishments/certificate/MBJECJKULMGF" target="_blank">
-							Google Data Analytics Professional Certificate</a></h3>
-						<!--	<p> insert link here </p> -->
-					</section>
-					<section>
-						<span class="icon major fa-gem"></span>
-						<h3>Maths and Statistics</h3>
-						<!--	<p> insert link here </p> -->
-					</section>
-				</div>
-				<!-- LINK TO GENERIC PAGE FOR WEBSITE
-					 <ul class="actions">
-					<li><a href="generic.html" class="button">Learn more</a></li>
-				</ul> -->
-			</div>
-		</section>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                Bridging Hands-On <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f2fe] to-sky-400 accent-glow">
+                    Airframe Structures & Heavy MRO
+                </span>
+                With Parametric CAD, FEA & SRM Engineering
+            </h1>
 
-		<!-- PROJECTS SectionID= One -->
-		<section id="one" class="wrapper style2 spotlights">
-			<section>
-				<a href="https://github.com/paulopoola/DataAnalysisProjects/blob/2cf24313183ac50a27693893feda8d60217cb5a7/Data%20Cleaning%20Project.sql"
-					target="_blank" class="image"><img src="images/housing.jpg" alt=""
-						data-position="center center" /></a>
-				<div class="content">
-					<div class="inner">
-						<h2>DATA CLEANING IN SQL</h2>
-						<p>Cleaned Housing Data in SQL server</p>
-						<ul class="actions">
-							<li><a href="https://github.com/paulopoola/DataAnalysisProjects/blob/2cf24313183ac50a27693893feda8d60217cb5a7/Data%20Cleaning%20Project.sql"
-									class="button" target="_blank">View Project</a></li>
-						</ul>
-					</div>
-				</div>
-			</section>
-			<section>
-				<a href="https://github.com/paulopoola/DataAnalysisProjects/blob/3bfef79d48ee410ae2ce337bb2caccdacd2eeeb8/CovidProjQ1.sql"
-					target="_blank" class="image"><img src="images/covid.jpg" alt="" data-position="center" /></a>
-				<div class="content">
-					<div class="inner">
-						<h2>DATA EXPLORATION IN SQL</h2>
-						<p>Data Exploration of Covid-19 Worldwide Data i SQL Server.</p>
-						<ul class="actions">
-							<li><a href="https://github.com/paulopoola/DataAnalysisProjects/blob/3bfef79d48ee410ae2ce337bb2caccdacd2eeeb8/CovidProjQ1.sql"
-									target="_blank" class="button">View Project</a></li>
-						</ul>
-					</div>
-				</div>
-			</section>
-			<section>
-				<a href="https://public.tableau.com/app/profile/opoola.paul" target="_blank" class="image"><img
-						src="images/Tableau2.jpg" /></a>
-				<div class="content">
-					<div class="inner">
-						<h2>TABLEAU PROJECTS</h2>
-						<p>This contains all my Tableau Dashboards</p>
-						<ul class="actions">
-							<li><a href="https://public.tableau.com/app/profile/opoola.paul" target="_blank"
-									class="button">View Project</a></li>
-						</ul>
-					</div>
-				</div>
-			</section>
-			<section>
-				<a href="https://github.com/paulopoola/DataAnalysisProjects/blob/3bfef79d48ee410ae2ce337bb2caccdacd2eeeb8/CorrelationProj_Python%20.ipynb"
-					target="_blank" class="image"><img src="images/movies.jpg" alt="" data-position="top center" /></a>
-				<div class="content">
-					<div class="inner">
-						<h2>CORRELATION WITH PYTHON</h2>
-						<p>wORKING WITH Tens of Thousands of movie Data. I used python to find the correlation between
-							the Company, Movie expenses, Reported revenue, Movie Rating and the year of release</p>
-						<ul class="actions">
-							<li><a href="https://github.com/paulopoola/DataAnalysisProjects/blob/3bfef79d48ee410ae2ce337bb2caccdacd2eeeb8/CorrelationProj_Python%20.ipynb"
-									target="_blank" class="button">View Project</a></li>
-						</ul>
-					</div>
-			</section>
-			<section>
-				<a href="https://github.com/paulopoola/DataAnalysisProjects/blob/main/Amazon%20Web%20Scrapping%20Project.ipynb"
-					target="_blank" class="image"><img src="images/amazon.jpg" data-position="center" /></a>
-				<div class="content">
-					<div class="inner">
-						<h2>WEB SCRAPING PROECT</h2>
-						<p>Amazon Web Scraping projects</p>
-						<ul class="actions">
-							<li><a href="https://github.com/paulopoola/DataAnalysisProjects/blob/main/Amazon%20Web%20Scrapping%20Project.ipynb"
-									target="_blank" class="button">View Project</a></li>
-						</ul>
-					</div>
-				</div>
-			</section>
-			<section>
-				<a href="https://github.com/paulopoola/DataAnalysisProjects" target="_blank" class="image">
-					<img src="images/other_projects.jpg" alt="" data-position="top center" /></a>
-				<div class="content">
-					<div class="inner">
-						<h2>More Data Analysis/Science Projects</h2>
-						<p>Numerous projects to practice and keep improving on my knowledge and skill set </p>
-						<ul class="actions">
-							<li><a href="https://github.com/paulopoola/DataAnalysisProjects"
-								target="_blank" class="button">View Project</a></li>
-						</ul>
-					</div>
-				</div>
-			</section>
-		</section>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+                Aircraft Maintenance Engineer (Structures) holding a <strong class="text-slate-200">B.Sc. in Aircraft Technology</strong> and <strong class="text-slate-200">3DEXPERIENCE Associate Certification</strong>. Experience across commercial and regional fleets (<strong class="text-slate-200">Pacific Coastal Airlines, Kenn Borek Air, Avia-Mir</strong>) translating SRM/EO requirements into precise sheet metal repairs, bend pattern layouts, composite layups, and 3D parametric CAD models.
+            </p>
 
+            <div class="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs">
+                <a href="#tools" class="px-5 py-3 rounded-md bg-[#00f2fe] text-slate-950 font-bold hover:bg-sky-300 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-xs"></i>
+                    <span>Launch Engineering Calculators</span>
+                </a>
+                <a href="#projects" class="px-5 py-3 rounded-md bg-[#161b22] border border-[#30363d] text-slate-200 hover:text-[#00f2fe] hover:border-[#00f2fe]/50 transition-all flex items-center gap-2">
+                    <span>View Engineering Projects</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-		<!-- Three -->
-		<section id="three" class="wrapper style1 fade-up">
-			<div class="inner">
-				<h2>Contact Me</h2>
+    <section id="transition" class="py-12 border-t border-[#30363d]">
+        <div class="max-w-6xl mx-auto px-4 space-y-8">
+            <div>
+                <h2 class="text-xs font-mono text-[#00f2fe] uppercase tracking-widest">// Capability Synthesis</h2>
+                <h3 class="text-2xl font-bold text-white mt-1">Hands-On Precision Meets Structural Design</h3>
+            </div>
 
-				<div class="split style1">
-					<section>
-						<form method="post" action="mailto:paul.opoola@gmail.com">
-							<div class="fields">
-								<div class="field half">
-									<label for="name">Name</label>
-									<input type="text" name="name" id="name" />
-								</div>
-								<div class="field half">
-									<label for="email">Email</label>
-									<input type="text" name="email" id="email" />
-								</div>
-								<div class="field">
-									<label for="message">Message</label>
-									<textarea name="message" id="message" rows="5"></textarea>
-								</div>
-							</div>
-							<ul class="actions">
-								<li><a href="" class="button submit">Send Message</a></li>
-							</ul>
-						</form>
-					</section>
-					<section>
-						<ul class="contact">
-							<li>
-								<h3>Address</h3>
-								<span>Dartmouth, Canada</span>
-							</li>
-							<li>
-								<h3>Email</h3>
-								<a href="paul.opoola@gmail.com">paul.opoola@gmail.com</a>
-							</li>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+                <!-- Hands-on Maintenance Column -->
+                <div class="card-clean p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-[#30363d] pb-3">
+                        <span class="text-slate-100 font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-wrench text-[#00f2fe]"></i> AME-S Heavy Maintenance & MRO
+                        </span>
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px]">PRACTICAL</span>
+                    </div>
+                    <ul class="space-y-2.5 text-slate-300 list-disc list-inside">
+                        <li><strong>SRM & EO Execution:</strong> Performing primary & secondary airframe repairs, skin doublers, and flush patches per FAA/TCCA standards.</li>
+                        <li><strong>C-Checks & Heavy Maintenance:</strong> Corrosion removal, NDT support, airframe teardowns, and flight control alignment.</li>
+                        <li><strong>Systems Familiarity:</strong> Hydraulics, pneumatics, landing gear, fuel/oxygen lines, and flight surface rigging.</li>
+                    </ul>
+                </div>
 
-							<li>
-								<h3>Phone and Socials</h3>
-								<span>(+380)933-91-3047</span>
-								<span>(+1)902-403-8324</span>
-								<ul class="icons">
-									<li><a href="https://github.com/paulopoola"
-											class="icon brands fa-github fa-2x"><span class="label">GitHub</span></a>
-									</li>
-									<li><a href="https://www.linkedin.com/in/paulopoola/"
-											class="icon brands fa-linkedin-in fa-2x"><span
-												class="label">LinkedIn</span></a>
-									</li>
-									<li><a href="wa.me/9024038324" class="icon
-											brands fa fa-whatsapp fa-2x"><span class="label">Whatsapp</span></a>
-									</li>
-									<li><a href="t.me/PaulOpoola" class="icon
-										brands fa fa-telegram fa-2x"><span class="label">Telegram</span></a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</section>
-				</div>
-			</div>
-		</section>
+                <!-- Structural Engineering Column -->
+                <div class="card-clean p-6 space-y-4 border-[#00f2fe]/30">
+                    <div class="flex items-center justify-between border-b border-[#30363d] pb-3">
+                        <span class="text-slate-100 font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-drafting-compass text-sky-400"></i> Structural Design & CAD/CAE
+                        </span>
+                        <span class="px-2 py-0.5 rounded bg-[#00f2fe]/10 text-[#00f2fe] text-[10px]">ENGINEERING</span>
+                    </div>
+                    <ul class="space-y-2.5 text-slate-300 list-disc list-inside">
+                        <li><strong>3D Parametric CAD:</strong> CATIA 3DEXPERIENCE Certified & SolidWorks sheet metal unfolding and surfacing.</li>
+                        <li><strong>Stress & Unfold Analytics:</strong> Setback, Bend Allowance, K-Factor calculations, and rivet shear edge distance margin safety.</li>
+                        <li><strong>Composites & Tooling:</strong> Mold design, quasi-isotropic ply schedule planning, and load distribution backing plates.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	</div>
+    <section id="fleet" class="py-12 border-t border-[#30363d]">
+        <div class="max-w-6xl mx-auto px-4 space-y-6">
+            <div>
+                <h2 class="text-xs font-mono text-[#00f2fe] uppercase tracking-widest">// Airframe Experience</h2>
+                <h3 class="text-2xl font-bold text-white mt-1">Aircraft Fleet Maintenance Portfolio</h3>
+                <p class="text-xs text-slate-400 mt-1">
+                    Direct hands-on structural repair, sheet metal fabrication, and C-Check maintenance experience across commercial, regional, and heavy transport aircraft.
+                </p>
+            </div>
 
-	<!-- Footer -->
-	<footer id="footer" class="wrapper style1-alt">
-		<div class="inner">
-			<ul class="menu" style='text-align: right;'>
-				<li>&copy; Paul Opoola. All rights reserved.</li>
-				<li>Edited by: Paul Opoola </li>
-			</ul>
-		</div>
-	</footer>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono text-xs">
+                <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-3 text-center space-y-1 hover:border-[#00f2fe] transition-colors">
+                    <i class="fa-solid fa-plane text-[#00f2fe] mb-1"></i>
+                    <div class="font-bold text-white text-xs">SAAB 340A/B</div>
+                    <div class="text-[10px] text-slate-400">Regional Turboprop</div>
+                </div>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-3 text-center space-y-1 hover:border-[#00f2fe] transition-colors">
+                    <i class="fa-solid fa-plane text-[#00f2fe] mb-1"></i>
+                    <div class="font-bold text-white text-xs">Beechcraft B1900D</div>
+                    <div class="text-[10px] text-slate-400">Twin Turboprop Airliner</div>
+                </div>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-3 text-center space-y-1 hover:border-[#00f2fe] transition-colors">
+                    <i class="fa-solid fa-plane text-[#00f2fe] mb-1"></i>
+                    <div class="font-bold text-white text-xs">DHC-6 Twin Otter</div>
+                    <div class="text-[10px] text-slate-400">Utility / STOL Airframe</div>
+                </div>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-3 text-center space-y-1 hover:border-[#00f2fe] transition-colors">
+                    <i class="fa-solid fa-plane text-[#00f2fe] mb-1"></i>
+                    <div class="font-bold text-white text-xs">Douglas DC-3</div>
+                    <div class="text-[10px] text-slate-400">Classic Transport</div>
+                </div>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-3 text-center space-y-1 hover:border-[#00f2fe] transition-colors">
+                    <i class="fa-solid fa-plane text-[#00f2fe] mb-1"></i>
+                    <div class="font-bold text-white text-xs">Ilyushin IL-76</div>
+                    <div class="text-[10px] text-slate-400">Heavy Freighter</div>
+                </div>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-lg p-3 text-center space-y-1 hover:border-[#00f2fe] transition-colors">
+                    <i class="fa-solid fa-plane text-[#00f2fe] mb-1"></i>
+                    <div class="font-bold text-white text-xs">Antonov AN-12</div>
+                    <div class="text-[10px] text-slate-400">Tactical Transport</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+    <section id="tools" class="py-12 border-t border-[#30363d]">
+        <div class="max-w-6xl mx-auto px-4 space-y-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-xs font-mono text-[#00f2fe] uppercase tracking-widest">// Interactive Aerospace Tools</h2>
+                    <h3 class="text-2xl font-bold text-white mt-1">Sheet Metal Unfold Engine & SRM Rivet Calculator</h3>
+                </div>
+                
+                <!-- Tool Selector Tabs -->
+                <div class="flex items-center gap-2 font-mono text-xs">
+                    <button id="tab-btn-unfold" onclick="switchToolTab('unfold')" class="px-3.5 py-1.5 rounded-md bg-[#00f2fe] text-slate-950 font-bold transition-all">Unfold Engine</button>
+                    <button id="tab-btn-rivet" onclick="switchToolTab('rivet')" class="px-3.5 py-1.5 rounded-md bg-[#161b22] border border-[#30363d] text-slate-300 hover:text-[#00f2fe] transition-all">SRM Rivet Layout</button>
+                </div>
+            </div>
 
+            <!-- TOOL 1: SHEET METAL UNFOLD ENGINE -->
+            <div id="tool-unfold" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Controls Column -->
+                <div class="lg:col-span-5 card-clean p-6 space-y-4 font-mono text-xs">
+                    <div class="flex justify-between items-center border-b border-[#30363d] pb-2">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-[#00f2fe]"></i> Geometric & Material Inputs
+                        </h4>
+                        <div class="flex gap-1">
+                            <button onclick="presetMaterial('2024-T3')" class="px-2 py-0.5 rounded bg-[#0d1117] text-[10px] text-slate-300 hover:text-[#00f2fe]">2024-T3</button>
+                            <button onclick="presetMaterial('7075-T6')" class="px-2 py-0.5 rounded bg-[#0d1117] text-[10px] text-slate-300 hover:text-[#00f2fe]">7075-T6</button>
+                        </div>
+                    </div>
+
+                    <!-- Material Preset Select -->
+                    <div>
+                        <label class="block text-slate-300 mb-1">Material & Neutral Axis ($K$-Factor)</label>
+                        <select id="mat-preset" onchange="updatePreset()" class="w-full bg-[#0d1117] border border-[#30363d] rounded p-2 text-slate-200 focus:border-[#00f2fe] focus:outline-none">
+                            <option value="0.33">Aluminum 2024-T3 / 6061-T6 (K = 0.33)</option>
+                            <option value="0.38">Aluminum 7075-T6 (K = 0.38)</option>
+                            <option value="0.40">301 Stainless Steel / Titanium Gr.2 (K = 0.40)</option>
+                            <option value="custom">Custom K-Factor Value</option>
+                        </select>
+                    </div>
+
+                    <!-- K-Factor Input -->
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-1">
+                            <span>K-Factor Neutral Axis Ratio ($K$)</span>
+                            <span id="val-k" class="text-[#00f2fe] font-bold">0.33</span>
+                        </div>
+                        <input type="range" id="input-k" min="0.20" max="0.50" step="0.01" value="0.33" oninput="calculateBend()" class="w-full accent-[#00f2fe]">
+                    </div>
+
+                    <!-- Sheet Thickness -->
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-1">
+                            <span>Sheet Thickness ($t$)</span>
+                            <span id="val-t" class="text-[#00f2fe] font-bold">0.040 in (1.02 mm)</span>
+                        </div>
+                        <input type="range" id="input-t" min="0.016" max="0.125" step="0.001" value="0.040" oninput="calculateBend()" class="w-full accent-[#00f2fe]">
+                    </div>
+
+                    <!-- Inside Bend Radius -->
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-1">
+                            <span>Inside Bend Radius ($R$)</span>
+                            <span id="val-r" class="text-[#00f2fe] font-bold">0.125 in (1/8")</span>
+                        </div>
+                        <input type="range" id="input-r" min="0.031" max="0.500" step="0.005" value="0.125" oninput="calculateBend()" class="w-full accent-[#00f2fe]">
+                    </div>
+
+                    <!-- Bend Angle -->
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-1">
+                            <span>Bend Angle ($\theta$)</span>
+                            <span id="val-angle" class="text-[#00f2fe] font-bold">90.0°</span>
+                        </div>
+                        <input type="range" id="input-angle" min="15" max="165" step="1" value="90" oninput="calculateBend()" class="w-full accent-[#00f2fe]">
+                    </div>
+
+                    <!-- Flange Leg A -->
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-1">
+                            <span>Leg A Outside Flange</span>
+                            <span id="val-lega" class="text-[#00f2fe] font-bold">2.500 in</span>
+                        </div>
+                        <input type="range" id="input-lega" min="0.50" max="6.00" step="0.05" value="2.50" oninput="calculateBend()" class="w-full accent-[#00f2fe]">
+                    </div>
+
+                    <!-- Flange Leg B -->
+                    <div>
+                        <div class="flex justify-between text-slate-300 mb-1">
+                            <span>Leg B Outside Flange</span>
+                            <span id="val-legb" class="text-[#00f2fe] font-bold">2.000 in</span>
+                        </div>
+                        <input type="range" id="input-legb" min="0.50" max="6.00" step="0.05" value="2.00" oninput="calculateBend()" class="w-full accent-[#00f2fe]">
+                    </div>
+                </div>
+
+                <!-- Display & Diagrams Column -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Bend Allowance (BA)</span>
+                            <div id="res-ba" class="text-lg font-bold text-[#00f2fe]">0.217 in</div>
+                            <span class="text-[9px] text-slate-500">Arc along neutral axis</span>
+                        </div>
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Setback (SB)</span>
+                            <div id="res-sb" class="text-lg font-bold text-sky-400">0.165 in</div>
+                            <span class="text-[9px] text-slate-500">(R + t) * tan(&theta;/2)</span>
+                        </div>
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Bend Deduction (BD)</span>
+                            <div id="res-bd" class="text-lg font-bold text-indigo-400">0.113 in</div>
+                            <span class="text-[9px] text-slate-500">2*SB - BA</span>
+                        </div>
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Unfolded Flat ($L_{flat}$)</span>
+                            <div id="res-flat" class="text-lg font-bold text-emerald-400">4.387 in</div>
+                            <span class="text-[9px] text-slate-500">Leg A + Leg B - BD</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Live Canvas Diagrams -->
+                    <div class="card-clean p-4 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#30363d] pb-2 font-mono text-xs">
+                            <span class="text-white font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-eye text-[#00f2fe]"></i> Cross-Section Profile & Neutral Axis
+                            </span>
+                            <span class="text-slate-400 text-[11px]">Brake Sight Line SL = <strong id="res-sl" class="text-[#00f2fe]">2.335 in</strong></span>
+                        </div>
+
+                        <!-- Canvas 1: Bent Profile -->
+                        <div class="relative w-full h-44 bg-[#0d1117] rounded-md border border-[#30363d] overflow-hidden flex items-center justify-center">
+                            <canvas id="canvas-bent" class="w-full h-full"></canvas>
+                        </div>
+
+                        <div class="border-b border-[#30363d] pt-2 pb-2 font-mono text-xs text-white font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-ruler-horizontal text-emerald-400"></i> Flat Pattern Layout
+                        </div>
+
+                        <!-- Canvas 2: Flat Layout -->
+                        <div class="relative w-full h-32 bg-[#0d1117] rounded-md border border-[#30363d] overflow-hidden flex items-center justify-center">
+                            <canvas id="canvas-flat" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOOL 2: SRM RIVET PITCH & EDGE DISTANCE CALCULATOR -->
+            <div id="tool-rivet" class="hidden card-clean p-6 space-y-6 font-mono text-xs">
+                <div class="border-b border-[#30363d] pb-3">
+                    <h4 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-circle-dot text-[#00f2fe]"></i> SRM Rivet Pitch, Edge Distance & Shear Load Calculator
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-1">
+                        Calculates recommended edge distance ($e/D$), rivet pitch bounds ($4D - 8D$), and estimated single-shear allowable capacity per FAA AC 43.13-1B / SRM standard practices.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-slate-300 mb-1">Rivet Nominal Diameter ($D$)</label>
+                            <select id="rivet-dia" onchange="calculateRivet()" class="w-full bg-[#0d1117] border border-[#30363d] rounded p-2 text-slate-200 focus:border-[#00f2fe]">
+                                <option value="0.09375">3/32" (3/32 in - MS20470AD3)</option>
+                                <option value="0.125" selected>1/8" (0.125 in - MS20470AD4)</option>
+                                <option value="0.15625">5/32" (0.156 in - MS20470AD5)</option>
+                                <option value="0.1875">3/16" (0.187 in - MS20470AD6)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-300 mb-1">Rivet Material / Alloy Type</label>
+                            <select id="rivet-alloy" onchange="calculateRivet()" class="w-full bg-[#0d1117] border border-[#30363d] rounded p-2 text-slate-200 focus:border-[#00f2fe]">
+                                <option value="26000">2117-T4 (AD Rivet - Shear: 26,000 psi)</option>
+                                <option value="34000">2024-T4 (DD Rivet - Shear: 34,000 psi)</option>
+                                <option value="38000">7050-T73 (E Rivet - Shear: 38,000 psi)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-300 mb-1">Skin Sheet Thickness ($t$)</label>
+                            <select id="rivet-sheet" onchange="calculateRivet()" class="w-full bg-[#0d1117] border border-[#30363d] rounded p-2 text-slate-200 focus:border-[#00f2fe]">
+                                <option value="0.032">0.032 in (0.81 mm)</option>
+                                <option value="0.040" selected>0.040 in (1.02 mm)</option>
+                                <option value="0.051">0.051 in (1.30 mm)</option>
+                                <option value="0.063">0.063 in (1.60 mm)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Rivet Metrics Display -->
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
+                        <h5 class="font-bold text-white text-sm border-b border-[#30363d] pb-2 text-[#00f2fe]">Layout & Clearance Output</h5>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-slate-400 text-[10px] block">Min Edge Distance ($2D$)</span>
+                                <span id="r-min-edge" class="text-sm font-bold text-slate-100">0.250 in</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 text-[10px] block">Nom. Edge Distance ($2.5D$)</span>
+                                <span id="r-nom-edge" class="text-sm font-bold text-[#00f2fe]">0.312 in</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 text-[10px] block">Min Rivet Pitch ($3D - 4D$)</span>
+                                <span id="r-min-pitch" class="text-sm font-bold text-slate-100">0.500 in</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 text-[10px] block">Max Rivet Pitch ($8D$)</span>
+                                <span id="r-max-pitch" class="text-sm font-bold text-slate-100">1.000 in</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-[#30363d] flex justify-between items-center">
+                            <span class="text-slate-300 text-xs">Estimated Single-Shear Strength:</span>
+                            <span id="r-shear" class="text-base font-bold text-emerald-400">319 lbs / rivet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-12 border-t border-[#30363d]">
+        <div class="max-w-6xl mx-auto px-4 space-y-8">
+            <div>
+                <h2 class="text-xs font-mono text-[#00f2fe] uppercase tracking-widest">// Portfolio Case Studies</h2>
+                <h3 class="text-2xl font-bold text-white mt-1">Airframe & Structural Engineering Case Studies</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Project 1: Sheet Metal Unfold Engine -->
+                <div class="card-clean p-6 flex flex-col justify-between space-y-4 border-[#00f2fe]/40">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-mono text-[#00f2fe] font-bold">INTERACTIVE TOOL ENGINE</span>
+                            <i class="fa-solid fa-calculator text-[#00f2fe]"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Sheet Metal Unfold & Bend Allowance Engine</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Engineered an algorithmic flat pattern layout tool calculating Setback ($SB$), Bend Allowance ($BA$), and Sight Line ($SL$) position. Built to bridge shop-floor airframe brake bending with CAD flat-pattern geometry.
+                        </p>
+                    </div>
+                    <button onclick="switchToolTab('unfold'); document.getElementById('tools').scrollIntoView({behavior:'smooth'});" class="text-xs font-mono text-[#00f2fe] hover:underline flex items-center gap-1.5 pt-2">
+                        Launch Engine Tool <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Project 2: Composite Tooling -->
+                <div class="card-clean p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-mono text-sky-400">COMPOSITE TOOLING</span>
+                            <i class="fa-solid fa-layer-group text-slate-500"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">3D Printed High-Temp Composite Layup Mold Design</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Engineered additive tooling split-molds for carbon fiber vacuum bagging. Modeled [0/45/90/-45]s quasi-isotropic ply schedules in SolidWorks surfacing.
+                        </p>
+                    </div>
+                    <button onclick="openModal('m2')" class="text-xs font-mono text-[#00f2fe] hover:underline flex items-center gap-1.5 pt-2">
+                        View Details <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Project 3: Reverse Engineering -->
+                <div class="card-clean p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-mono text-[#00f2fe]">CAD / CAM & REVERSE ENG.</span>
+                            <i class="fa-solid fa-cube text-slate-500"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Reverse-Engineered Structural Airframe Bracket</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            3D parametric reconstruction of a legacy aluminum attachment bracket in CATIA 3DEXPERIENCE. Integrated GD&T tolerancing and stress relief fillets.
+                        </p>
+                    </div>
+                    <button onclick="openModal('m3')" class="text-xs font-mono text-[#00f2fe] hover:underline flex items-center gap-1.5 pt-2">
+                        View Details <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Project 4: Aero Structural Mods -->
+                <div class="card-clean p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-mono text-sky-400">STRUCTURAL MODS</span>
+                            <i class="fa-solid fa-car-side text-slate-500"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">S550 Aerodynamic & Structural Modifications</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Engineered backing plates and load-spread brackets for carbon fiber aerodynamic fitments under high-speed buffeting loads.
+                        </p>
+                    </div>
+                    <button onclick="openModal('m4')" class="text-xs font-mono text-[#00f2fe] hover:underline flex items-center gap-1.5 pt-2">
+                        View Details <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-12 border-t border-[#30363d]">
+        <div class="max-w-6xl mx-auto px-4 space-y-6">
+            <div>
+                <h2 class="text-xs font-mono text-[#00f2fe] uppercase tracking-widest">// Technical Toolkit</h2>
+                <h3 class="text-2xl font-bold text-white mt-1">Skills, Credentials & Systems Experience</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Credentials Card -->
+                <div class="card-clean p-6 space-y-3">
+                    <h4 class="text-sm font-mono text-white font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-certificate text-[#00f2fe]"></i> Credentials & Education
+                    </h4>
+                    <div class="space-y-2 font-mono text-xs">
+                        <div class="p-2.5 bg-[#0d1117] rounded border border-[#30363d] flex justify-between items-center">
+                            <span class="text-slate-200">B.Sc. Aircraft Technology (WES Evaluated)</span>
+                            <span class="text-[#00f2fe]">Degree</span>
+                        </div>
+                        <div class="p-2.5 bg-[#0d1117] rounded border border-[#30363d] flex justify-between items-center">
+                            <span class="text-slate-200">3DEXPERIENCE Mechanical Design Associate</span>
+                            <span class="text-sky-400">Certified</span>
+                        </div>
+                        <div class="p-2.5 bg-[#0d1117] rounded border border-[#30363d] flex justify-between items-center">
+                            <span class="text-slate-200">AME-Structures / Airframe Maintenance Technician</span>
+                            <span class="text-[#00f2fe]">Practical AME</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comprehensive Skills Grid -->
+                <div class="card-clean p-6 space-y-3">
+                    <h4 class="text-sm font-mono text-white font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-toolbox text-sky-400"></i> Core Competencies
+                    </h4>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">CATIA 3DEXPERIENCE</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">SolidWorks Sheet Metal</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">SRM & Engineering Orders (EO)</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">K-Factor & Bend Allowance</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Airframe Doublers & Patches</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Composite Layups & Repairs</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Structural Substantiation</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Flight Controls & Rigging</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Hydraulics & Pneumatics</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Fuel & Oxygen Systems</span>
+                        <span class="px-2.5 py-1 bg-[#0d1117] border border-[#30363d] rounded text-slate-300">Landing Gear Assembly</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 border-t border-[#30363d]">
+        <div class="max-w-6xl mx-auto px-4 text-center space-y-6">
+            <h2 class="text-2xl font-bold text-white">Let's Connect</h2>
+            <p class="text-slate-400 text-xs font-mono max-w-md mx-auto">
+                Ready to bring practical AME airframe discipline and CAD/CAE design to your structural engineering team.
+            </p>
+
+            <div class="flex justify-center items-center gap-4 font-mono text-xs pt-2">
+                <button onclick="copyMail('paulopoola@gmail.com')" class="px-4 py-2.5 rounded bg-[#161b22] border border-[#30363d] text-slate-200 hover:text-[#00f2fe] hover:border-[#00f2fe]/50 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-[#00f2fe]"></i>
+                    <span>paulopoola@gmail.com</span>
+                </button>
+                <a href="https://linkedin.com" target="_blank" class="p-2.5 rounded bg-[#161b22] border border-[#30363d] text-slate-200 hover:text-[#00f2fe] transition-colors" title="LinkedIn">
+                    <i class="fa-brands fa-linkedin text-base"></i>
+                </a>
+                <a href="https://github.com/paulopoola" target="_blank" class="p-2.5 rounded bg-[#161b22] border border-[#30363d] text-slate-200 hover:text-[#00f2fe] transition-colors" title="GitHub">
+                    <i class="fa-brands fa-github text-base"></i>
+                </a>
+            </div>
+
+            <p class="text-[11px] font-mono text-slate-600 pt-8">
+                © 2026 Oluwafemi (Femi / PO) Opoola • Aircraft Structural Engineering Portfolio
+            </p>
+        </div>
+    </section>
+
+    <!-- Case Study Modals -->
+    <div id="m2" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#161b22] border border-[#30363d] max-w-lg w-full rounded-xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-[#30363d] pb-3">
+                <h4 class="text-base font-bold text-white">Composite Layup Mold Design</h4>
+                <button onclick="closeModal('m2')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-mono">
+                Designed 3D-printed high-temp additive tooling split-molds for carbon fiber vacuum bagging. Modeled symmetric quasi-isotropic ply schedules in SolidWorks to prevent thermal curing warping.
+            </p>
+            <div class="flex justify-end">
+                <button onclick="closeModal('m2')" class="px-3 py-1.5 bg-[#30363d] text-slate-200 text-xs font-mono rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="m3" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#161b22] border border-[#30363d] max-w-lg w-full rounded-xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-[#30363d] pb-3">
+                <h4 class="text-base font-bold text-white">Reverse-Engineered Bracket</h4>
+                <button onclick="closeModal('m3')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-mono">
+                Modeled airframe attachment bracket in CATIA 3DEXPERIENCE from precision caliper measurements. Added fillet radii to eliminate stress concentrations and generated fully dimensionalized GD&T drawings.
+            </p>
+            <div class="flex justify-end">
+                <button onclick="closeModal('m3')" class="px-3 py-1.5 bg-[#30363d] text-slate-200 text-xs font-mono rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="m4" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#161b22] border border-[#30363d] max-w-lg w-full rounded-xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-[#30363d] pb-3">
+                <h4 class="text-base font-bold text-white">S550 Aerodynamic Modifications</h4>
+                <button onclick="closeModal('m4')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-mono">
+                Engineered custom aluminum backing plates to distribute localized fastener shear loads across carbon fiber weaves under high-speed dynamic aerodynamic pressure.
+            </p>
+            <div class="flex justify-end">
+                <button onclick="closeModal('m4')" class="px-3 py-1.5 bg-[#30363d] text-slate-200 text-xs font-mono rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Navigation Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        menuBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+        document.querySelectorAll('.m-link').forEach(link => {
+            link.addEventListener('click', () => mobileNav.classList.add('hidden'));
+        });
+
+        // Tab Switching between Unfold Engine and Rivet Calculator
+        function switchToolTab(tab) {
+            const unfoldTool = document.getElementById('tool-unfold');
+            const rivetTool = document.getElementById('tool-rivet');
+            const btnUnfold = document.getElementById('tab-btn-unfold');
+            const btnRivet = document.getElementById('tab-btn-rivet');
+
+            if (tab === 'unfold') {
+                unfoldTool.classList.remove('hidden');
+                rivetTool.classList.add('hidden');
+                btnUnfold.className = 'px-3.5 py-1.5 rounded-md bg-[#00f2fe] text-slate-950 font-bold transition-all';
+                btnRivet.className = 'px-3.5 py-1.5 rounded-md bg-[#161b22] border border-[#30363d] text-slate-300 hover:text-[#00f2fe] transition-all';
+                calculateBend();
+            } else {
+                unfoldTool.classList.add('hidden');
+                rivetTool.classList.remove('hidden');
+                btnRivet.className = 'px-3.5 py-1.5 rounded-md bg-[#00f2fe] text-slate-950 font-bold transition-all';
+                btnUnfold.className = 'px-3.5 py-1.5 rounded-md bg-[#161b22] border border-[#30363d] text-slate-300 hover:text-[#00f2fe] transition-all';
+                calculateRivet();
+            }
+        }
+
+        // Material Preset Quick Selectors
+        function updatePreset() {
+            const presetSelect = document.getElementById('mat-preset');
+            const kInput = document.getElementById('input-k');
+            if (presetSelect.value !== 'custom') {
+                kInput.value = presetSelect.value;
+            }
+            calculateBend();
+        }
+
+        function presetMaterial(mat) {
+            const presetSelect = document.getElementById('mat-preset');
+            const kInput = document.getElementById('input-k');
+            if (mat === '2024-T3') {
+                presetSelect.value = '0.33';
+                kInput.value = '0.33';
+            } else if (mat === '7075-T6') {
+                presetSelect.value = '0.38';
+                kInput.value = '0.38';
+            }
+            calculateBend();
+        }
+
+        function calculateBend() {
+            const K = parseFloat(document.getElementById('input-k').value);
+            const t = parseFloat(document.getElementById('input-t').value);
+            const R = parseFloat(document.getElementById('input-r').value);
+            const deg = parseFloat(document.getElementById('input-angle').value);
+            const legA = parseFloat(document.getElementById('input-lega').value);
+            const legB = parseFloat(document.getElementById('input-legb').value);
+
+            // Dynamic Text Displays
+            document.getElementById('val-k').textContent = K.toFixed(2);
+            document.getElementById('val-t').textContent = t.toFixed(3) + " in (" + (t * 25.4).toFixed(2) + " mm)";
+            document.getElementById('val-r').textContent = R.toFixed(3) + " in";
+            document.getElementById('val-angle').textContent = deg.toFixed(1) + "°";
+            document.getElementById('val-lega').textContent = legA.toFixed(3) + " in";
+            document.getElementById('val-legb').textContent = legB.toFixed(3) + " in";
+
+            const rad = (deg * Math.PI) / 180.0;
+            const halfRad = rad / 2.0;
+
+            // Bend Allowance BA = (pi / 180) * angle * (Radius + K * thickness)
+            const BA = (Math.PI / 180.0) * deg * (R + K * t);
+
+            // Outside Setback SB = (R + t) * tan(angle / 2)
+            const SB = (R + t) * Math.tan(halfRad);
+
+            // Bend Deduction BD = 2 * Setback - Bend Allowance
+            const BD = (2.0 * SB) - BA;
+
+            // Flat Length L_flat = Leg A + Leg B - Bend Deduction
+            const flatLength = legA + legB - BD;
+
+            // Sight Line Distance SL = Leg A - Setback
+            const sightLine = legA - SB;
+
+            // Render Results Table
+            document.getElementById('res-ba').textContent = BA.toFixed(3) + " in";
+            document.getElementById('res-sb').textContent = SB.toFixed(3) + " in";
+            document.getElementById('res-bd').textContent = BD.toFixed(3) + " in";
+            document.getElementById('res-flat').textContent = flatLength.toFixed(3) + " in";
+            document.getElementById('res-sl').textContent = sightLine.toFixed(3) + " in";
+
+            // Render Dynamic Diagrams
+            drawBentCanvas(R, t, deg, legA, legB, K);
+            drawFlatCanvas(legA, legB, SB, BA, flatLength);
+        }
+
+        function calculateRivet() {
+            const D = parseFloat(document.getElementById('rivet-dia').value);
+            const shearStress = parseFloat(document.getElementById('rivet-alloy').value);
+            const t = parseFloat(document.getElementById('rivet-sheet').value);
+
+            const minEdge = 2.0 * D;
+            const nomEdge = 2.5 * D;
+            const minPitch = 4.0 * D;
+            const maxPitch = 8.0 * D;
+
+            // Single shear load = Shear Stress * Area = Fs * (pi * D^2 / 4)
+            const area = Math.PI * Math.pow(D, 2) / 4.0;
+            const shearStrength = shearStress * area;
+
+            document.getElementById('r-min-edge').textContent = minEdge.toFixed(3) + " in";
+            document.getElementById('r-nom-edge').textContent = nomEdge.toFixed(3) + " in";
+            document.getElementById('r-min-pitch').textContent = minPitch.toFixed(3) + " in";
+            document.getElementById('r-max-pitch').textContent = maxPitch.toFixed(3) + " in";
+            document.getElementById('r-shear').textContent = Math.round(shearStrength) + " lbs / rivet";
+        }
+
+        function drawBentCanvas(R, t, deg, legA, legB, K) {
+            const canvas = document.getElementById('canvas-bent');
+            if (!canvas || canvas.offsetParent === null) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const maxDimension = Math.max(legA, legB) * 1.5;
+            const scale = Math.min(w, h) / maxDimension;
+
+            const startX = w * 0.2;
+            const startY = h * 0.8;
+
+            const rad = (deg * Math.PI) / 180.0;
+
+            ctx.save();
+            ctx.translate(startX, startY);
+
+            const rIn = R * scale;
+            const th = t * scale;
+            const lA = legA * scale;
+            const lB = legB * scale;
+
+            ctx.lineWidth = Math.max(th, 3);
+            ctx.strokeStyle = '#38bdf8';
+
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(lA - rIn, 0);
+
+            const arcCX = lA - rIn;
+            const arcCY = -rIn;
+            ctx.arc(arcCX, arcCY, rIn, Math.PI / 2, Math.PI / 2 - rad, true);
+
+            const endArcX = arcCX + rIn * Math.sin(rad);
+            const endArcY = arcCY + rIn * Math.cos(rad);
+
+            const legBX = endArcX + (lB - rIn) * Math.cos(rad);
+            const legBY = endArcY - (lB - rIn) * Math.sin(rad);
+
+            ctx.lineTo(legBX, legBY);
+            ctx.stroke();
+
+            // Neutral Axis Line
+            const rNeut = (R + K * t) * scale;
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#00f2fe';
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath();
+            ctx.moveTo(0, -K * th);
+            ctx.lineTo(lA - rIn, -K * th);
+            ctx.arc(arcCX, arcCY, rNeut, Math.PI / 2, Math.PI / 2 - rad, true);
+            const legBNx = arcCX + rNeut * Math.sin(rad) + (lB - rIn) * Math.cos(rad);
+            const legBNy = arcCY + rNeut * Math.cos(rad) - (lB - rIn) * Math.sin(rad);
+            ctx.lineTo(legBNx, legBNy);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawFlatCanvas(legA, legB, SB, BA, flatLength) {
+            const canvas = document.getElementById('canvas-flat');
+            if (!canvas || canvas.offsetParent === null) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const padX = 40;
+            const sheetH = 26;
+            const centerY = h / 2 - sheetH / 2;
+            const availableW = w - padX * 2;
+
+            const scale = availableW / flatLength;
+
+            // Flat Sheet Outline
+            ctx.fillStyle = '#21262d';
+            ctx.strokeStyle = '#30363d';
+            ctx.lineWidth = 2;
+            ctx.fillRect(padX, centerY, flatLength * scale, sheetH);
+            ctx.strokeRect(padX, centerY, flatLength * scale, sheetH);
+
+            const ml1 = (legA - SB) * scale;
+            const ml2 = ml1 + (BA * scale);
+
+            // Bend Lines
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(padX + ml1, centerY - 4);
+            ctx.lineTo(padX + ml1, centerY + sheetH + 4);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(padX + ml2, centerY - 4);
+            ctx.lineTo(padX + ml2, centerY + sheetH + 4);
+            ctx.stroke();
+
+            // Sight Line
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.moveTo(padX + ml1, centerY);
+            ctx.lineTo(padX + ml1, centerY + sheetH);
+            ctx.stroke();
+
+            ctx.fillStyle = '#00f2fe';
+            ctx.font = '10px JetBrains Mono, monospace';
+            ctx.fillText('Unfolded Blank = ' + flatLength.toFixed(3) + '"', padX, centerY - 10);
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function copyMail(email) {
+            const temp = document.createElement('input');
+            temp.value = email;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            alert('Copied email address: ' + email);
+        }
+
+        window.onload = function() {
+            calculateBend();
+            calculateRivet();
+            window.addEventListener('resize', () => {
+                calculateBend();
+                calculateRivet();
+            });
+        }
+    </script>
 </body>
-
 </html>
