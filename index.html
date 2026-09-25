@@ -529,6 +529,23 @@
                         <span class="text-slate-300">Show Flow Streamlines</span>
                         <input type="checkbox" id="check-streamlines" checked onchange="drawAirfoil()" class="accent-[#00f2fe] h-4 w-4">
                     </div>
+
+                    <!-- CFD Panel Method Inputs -->
+                    <div class="pt-3 border-t border-[#30363d] space-y-4">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-gauge-high text-[#00f2fe]"></i> CFD Panel-Method Solver
+                        </h4>
+                        <div>
+                            <div class="flex justify-between text-slate-300 mb-1">
+                                <span>Reynolds Number ($Re$)</span>
+                                <span id="val-airfoil-re" class="text-[#00f2fe] font-bold">1.0×10⁶</span>
+                            </div>
+                            <input type="range" id="input-airfoil-re" min="4.5" max="7.5" step="0.05" value="6" oninput="drawAirfoil()" class="w-full accent-[#00f2fe]">
+                        </div>
+                        <p class="text-[10px] text-slate-500 leading-relaxed">
+                            Solves a constant-strength vortex panel method (N=<span id="val-airfoil-npanels">120</span> panels, Kutta condition enforced) for surface C<sub>p</sub> and circulation, with C<sub>D</sub> from a Hoerner flat-plate + form-factor correlation at the input Re.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Canvas Display Column -->
@@ -539,7 +556,7 @@
                             <div id="res-airfoil-code" class="text-lg font-bold text-[#00f2fe]">NACA 2412</div>
                         </div>
                         <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
-                            <span class="text-slate-400 text-[10px] uppercase">Approx $C_L$</span>
+                            <span class="text-slate-400 text-[10px] uppercase">Panel-Method $C_L$</span>
                             <div id="res-airfoil-cl" class="text-lg font-bold text-sky-400">0.66</div>
                         </div>
                         <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
@@ -549,6 +566,25 @@
                         <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
                             <span class="text-slate-400 text-[10px] uppercase">Thickness Max</span>
                             <div id="res-airfoil-thick" class="text-lg font-bold text-emerald-400">0.12 c</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Profile Drag $C_D$</span>
+                            <div id="res-airfoil-cd" class="text-lg font-bold text-orange-400">0.0090</div>
+                        </div>
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Moment $C_{M,c/4}$</span>
+                            <div id="res-airfoil-cm" class="text-lg font-bold text-[#00f2fe]">-0.05</div>
+                        </div>
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Lift-to-Drag $L/D$</span>
+                            <div id="res-airfoil-ld" class="text-lg font-bold text-orange-400">70</div>
+                        </div>
+                        <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3 text-center space-y-1">
+                            <span class="text-slate-400 text-[10px] uppercase">Min $C_p$ (suction pk)</span>
+                            <div id="res-airfoil-cpmin" class="text-lg font-bold text-rose-400">-3.10</div>
                         </div>
                     </div>
 
@@ -562,6 +598,19 @@
 
                         <div class="relative w-full h-80 bg-[#0d1117] rounded-md border border-[#30363d] overflow-hidden flex items-center justify-center">
                             <canvas id="canvas-airfoil" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card-clean p-4 space-y-3">
+                        <div class="flex items-center justify-between border-b border-[#30363d] pb-2 font-mono text-xs">
+                            <span class="text-white font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-[#00f2fe]"></i> Surface Pressure Coefficient (C<sub>p</sub> vs x/c)
+                            </span>
+                            <span class="text-slate-400 text-[11px]"><span class="text-[#00f2fe]">— Upper</span> &nbsp; <span class="text-orange-400">— Lower</span></span>
+                        </div>
+
+                        <div class="relative w-full h-56 bg-[#0d1117] rounded-md border border-[#30363d] overflow-hidden flex items-center justify-center">
+                            <canvas id="canvas-cp" class="w-full h-full"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1133,6 +1182,147 @@
             ctx.fillText('Unfolded Blank = ' + flatLength.toFixed(3) + '"', padX, centerY - 10);
         }
 
+        // ===== CFD PANEL METHOD (constant-strength vortex panels, Kutta condition) =====
+        function pmNaca4Points(m, p, t, N) {
+            // m,p,t as fractions (m: max camber, p: camber location, t: thickness), cosine-spaced closed loop
+            function yt(x) { return 5 * t * (0.2969 * Math.sqrt(x) - 0.1260 * x - 0.3516 * x * x + 0.2843 * x * x * x - 0.1015 * x * x * x * x); }
+            function camber(x) {
+                if (p <= 0 || p >= 1) return { yc: 0, dyc: 0 };
+                if (x < p) return { yc: (m / (p * p)) * (2 * p * x - x * x), dyc: (2 * m / (p * p)) * (p - x) };
+                return { yc: (m / ((1 - p) * (1 - p))) * ((1 - 2 * p) + 2 * p * x - x * x), dyc: (2 * m / ((1 - p) * (1 - p))) * (p - x) };
+            }
+            const n2 = N / 2, xs = [];
+            for (let i = 0; i <= n2; i++) xs.push((1 - Math.cos(Math.PI * i / n2)) / 2);
+            const upper = [];
+            for (let i = n2; i >= 0; i--) { const x = xs[i]; const { yc, dyc } = camber(x); const th = Math.atan(dyc); const ytt = yt(x); upper.push({ x: x - ytt * Math.sin(th), y: yc + ytt * Math.cos(th) }); }
+            const lower = [];
+            for (let i = 1; i <= n2; i++) { const x = xs[i]; const { yc, dyc } = camber(x); const th = Math.atan(dyc); const ytt = yt(x); lower.push({ x: x + ytt * Math.sin(th), y: yc - ytt * Math.cos(th) }); }
+            return upper.concat(lower);
+        }
+        function pmBuildPanels(pts) {
+            const N = pts.length - 1;
+            const xc = [], yc = [], S = [], phi = [], sinphi = [], cosphi = [], nx = [], ny = [];
+            for (let i = 0; i < N; i++) {
+                const x1 = pts[i].x, y1 = pts[i].y, x2 = pts[i + 1].x, y2 = pts[i + 1].y;
+                xc.push((x1 + x2) / 2); yc.push((y1 + y2) / 2);
+                const dx = x2 - x1, dy = y2 - y1;
+                S.push(Math.hypot(dx, dy));
+                const ang = Math.atan2(dy, dx);
+                phi.push(ang); sinphi.push(Math.sin(ang)); cosphi.push(Math.cos(ang));
+                nx.push(-Math.sin(ang)); ny.push(Math.cos(ang));
+            }
+            return { N, xc, yc, S, phi, sinphi, cosphi, nx, ny };
+        }
+        function pmInfluence(P, j, px, py, isSelf) {
+            const j0x = P.xc[j] - 0.5 * P.S[j] * P.cosphi[j], j0y = P.yc[j] - 0.5 * P.S[j] * P.sinphi[j];
+            const dx = px - j0x, dy = py - j0y;
+            const xloc = dx * P.cosphi[j] + dy * P.sinphi[j];
+            const zloc = -dx * P.sinphi[j] + dy * P.cosphi[j];
+            const Sj = P.S[j];
+            let ul, vl;
+            if (isSelf) { ul = 0.5; vl = 0; }
+            else {
+                const r1 = Math.hypot(xloc, zloc), r2 = Math.hypot(xloc - Sj, zloc);
+                const th1 = Math.atan2(zloc, xloc), th2 = Math.atan2(zloc, xloc - Sj);
+                ul = (1 / (2 * Math.PI)) * (th1 - th2);
+                vl = (1 / (2 * Math.PI)) * Math.log(r1 / (r2 < 1e-12 ? 1e-12 : r2));
+            }
+            return [ul * P.cosphi[j] - vl * P.sinphi[j], ul * P.sinphi[j] + vl * P.cosphi[j]];
+        }
+        function pmSolve(pts, alphaDeg) {
+            const alpha = alphaDeg * Math.PI / 180;
+            const P = pmBuildPanels(pts);
+            const N = P.N;
+            const A = [], b = [];
+            for (let i = 0; i < N; i++) A.push(new Array(N).fill(0));
+            for (let i = 0; i < N; i++) {
+                let rhs = -(Math.cos(alpha) * P.nx[i] + Math.sin(alpha) * P.ny[i]);
+                for (let j = 0; j < N; j++) {
+                    const [u, v] = pmInfluence(P, j, P.xc[i], P.yc[i], i === j);
+                    A[i][j] = u * P.nx[i] + v * P.ny[i];
+                }
+                b.push(rhs);
+            }
+            A[N - 1] = new Array(N).fill(0); A[N - 1][0] = 1; A[N - 1][N - 1] = 1; b[N - 1] = 0;
+            for (let col = 0; col < N; col++) {
+                let piv = col;
+                for (let r = col + 1; r < N; r++) if (Math.abs(A[r][col]) > Math.abs(A[piv][col])) piv = r;
+                [A[col], A[piv]] = [A[piv], A[col]]; [b[col], b[piv]] = [b[piv], b[col]];
+                for (let r = col + 1; r < N; r++) { const f = A[r][col] / A[col][col]; for (let c = col; c < N; c++) A[r][c] -= f * A[col][c]; b[r] -= f * b[col]; }
+            }
+            const gamma = new Array(N).fill(0);
+            for (let r = N - 1; r >= 0; r--) { let s = b[r]; for (let c = r + 1; c < N; c++) s -= A[r][c] * gamma[c]; gamma[r] = s / A[r][r]; }
+            const Cp = gamma.map(g => 1 - g * g);
+            let Gamma = 0; for (let i = 0; i < N; i++) Gamma += gamma[i] * P.S[i];
+            const Cl = -2 * Gamma;
+            let Cm = 0;
+            for (let i = 0; i < N; i++) { const dx = pts[i + 1].x - pts[i].x; Cm += Cp[i] * (P.xc[i] - 0.25) * dx; }
+            return { P, gamma, Cp, Cl, Cm, alpha };
+        }
+        function pmVelocity(P, gamma, alpha, px, py) {
+            let u = Math.cos(alpha), v = Math.sin(alpha);
+            for (let j = 0; j < P.N; j++) { const [uu, vv] = pmInfluence(P, j, px, py, false); u += gamma[j] * uu; v += gamma[j] * vv; }
+            return [u, v];
+        }
+        function pmEstimateCd(t_over_c, Re) {
+            const Cf = 0.074 / Math.pow(Re, 0.2);
+            const formFactor = 1 + 2 * t_over_c + 60 * Math.pow(t_over_c, 4);
+            return Cf * formFactor * 2;
+        }
+        function pmInsideAirfoil(pts, x, y) {
+            let inside = false;
+            for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+                const xi = pts[i].x, yi = pts[i].y, xj = pts[j].x, yj = pts[j].y;
+                const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi + 1e-15) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+        function pmFmtRe(re) {
+            const exp = Math.floor(Math.log10(re)); const mant = re / Math.pow(10, exp);
+            const map = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻' };
+            return mant.toFixed(1) + '×10' + String(exp).split('').map(c => map[c] || c).join('');
+        }
+        function pmCpColor(cp) {
+            const t = Math.max(0, Math.min(1, (1.2 - cp) / (1.2 + 4)));
+            const stops = [[220, 38, 38], [248, 113, 113], [253, 230, 138], [147, 197, 253], [37, 99, 235]];
+            const pos = t * (stops.length - 1); const i0 = Math.floor(pos), i1 = Math.min(stops.length - 1, i0 + 1), f = pos - i0;
+            const c0 = stops[i0], c1 = stops[i1];
+            return `rgb(${Math.round(c0[0]+(c1[0]-c0[0])*f)},${Math.round(c0[1]+(c1[1]-c0[1])*f)},${Math.round(c0[2]+(c1[2]-c0[2])*f)})`;
+        }
+        function drawCpPlot(P, Cp) {
+            const canvas = document.getElementById('canvas-cp');
+            if (!canvas || canvas.offsetParent === null) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr);
+            const W = rect.width, H = rect.height;
+            ctx.clearRect(0, 0, W, H);
+            const pad = { l: 34, r: 14, t: 10, b: 22 };
+            const plotW = W - pad.l - pad.r, plotH = H - pad.t - pad.b;
+            const cpMin = Math.min(-4, Math.min(...Cp) - 0.3), cpMax = 1.3;
+            const sx = xc => pad.l + xc * plotW;
+            const sy = cp => pad.t + (cpMax - cp) / (cpMax - cpMin) * plotH;
+            ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+            for (let g = 0; g <= 4; g++) { const xc = g / 4; ctx.beginPath(); ctx.moveTo(sx(xc), pad.t); ctx.lineTo(sx(xc), pad.t + plotH); ctx.stroke(); }
+            [1, 0, -2, -4].forEach(v => {
+                if (v < cpMin || v > cpMax) return;
+                ctx.beginPath(); ctx.moveTo(pad.l, sy(v)); ctx.lineTo(pad.l + plotW, sy(v)); ctx.stroke();
+                ctx.fillStyle = '#64748b'; ctx.font = '9px monospace'; ctx.textAlign = 'right';
+                ctx.fillText(v.toFixed(0), pad.l - 5, sy(v) + 3);
+            });
+            ctx.fillStyle = '#64748b'; ctx.font = '9px monospace'; ctx.textAlign = 'center';
+            [0, 0.5, 1].forEach(v => ctx.fillText(v.toFixed(1), sx(v), H - 6));
+            const N = P.N, half = N / 2;
+            ctx.lineWidth = 1.8; ctx.strokeStyle = '#00f2fe'; ctx.beginPath();
+            for (let i = 0; i < half; i++) { const xc = P.xc[N - 1 - i], cp = Cp[N - 1 - i]; const X = sx(xc), Y = sy(cp); if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
+            ctx.stroke();
+            ctx.strokeStyle = '#fb923c'; ctx.beginPath();
+            for (let i = half; i < N; i++) { const xc = P.xc[i], cp = Cp[i]; const X = sx(xc), Y = sy(cp); if (i === half) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
+            ctx.stroke();
+        }
+
         // TOOL 2: NACA Airfoil Visualization Engine
         function presetAirfoil(code) {
             const m = parseInt(code.charAt(0));
@@ -1165,12 +1355,27 @@
             const airfoilCode = "NACA " + mVal + pVal + (tVal < 10 ? '0' + tVal : tVal);
             document.getElementById('res-airfoil-code').textContent = airfoilCode;
 
-            // Approx Thin Airfoil Theory: Cl = 2 * pi * (alpha - alpha_0)
+            // Zero-lift angle: still the thin-airfoil-theory approximation (fast, no solve needed)
             const alpha0 = -2.0 * m * 100; // rough approx
-            const Cl = 2 * Math.PI * (alphaRad - (alpha0 * Math.PI / 180.0));
-            document.getElementById('res-airfoil-cl').textContent = Cl.toFixed(2);
             document.getElementById('res-airfoil-a0').textContent = alpha0.toFixed(1) + "°";
             document.getElementById('res-airfoil-thick').textContent = t.toFixed(2) + " c";
+
+            // ---- CFD panel-method solve (real numerical solution, not thin-airfoil approx) ----
+            const reSlider = document.getElementById('input-airfoil-re');
+            const Re = Math.pow(10, parseFloat(reSlider.value));
+            document.getElementById('val-airfoil-re').textContent = pmFmtRe(Re);
+            const NP = 120;
+            document.getElementById('val-airfoil-npanels').textContent = NP;
+            const pmPts = pmNaca4Points(m, p, t, NP);
+            const pm = pmSolve(pmPts, alphaDeg);
+            const Cl = pm.Cl;
+            const cd = pmEstimateCd(t, Re);
+            document.getElementById('res-airfoil-cl').textContent = Cl.toFixed(2);
+            document.getElementById('res-airfoil-cd').textContent = cd.toFixed(4);
+            document.getElementById('res-airfoil-cm').textContent = pm.Cm.toFixed(3);
+            document.getElementById('res-airfoil-ld').textContent = (Cl / cd).toFixed(1);
+            document.getElementById('res-airfoil-cpmin').textContent = Math.min(...pm.Cp).toFixed(2);
+            drawCpPlot(pm.P, pm.Cp);
 
             const canvas = document.getElementById('canvas-airfoil');
             if (!canvas || canvas.offsetParent === null) return;
@@ -1236,27 +1441,26 @@
             ctx.translate(originX, originY);
             ctx.rotate(-alphaRad);
 
-            // Streamlines
+            // Streamlines - traced through the actual panel-method velocity field (CFD solve above)
             if (showStreamlines) {
                 ctx.lineWidth = 1;
-                const numLines = 9;
-                for (let j = 0; j < numLines; j++) {
-                    const startY = (-0.35 + j * 0.08) * chordLength;
-                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+                const seedYs = []; for (let sY = -0.45; sY <= 0.45; sY += 0.06) seedYs.push(sY);
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)';
+                seedYs.forEach(y0 => {
+                    let x = -0.35, y = y0;
                     ctx.beginPath();
-                    for (let sx = -0.2; sx <= 1.2; sx += 0.02) {
-                        const px = sx * chordLength;
-                        // Velocity streamline deflection model
-                        let deflection = 0;
-                        if (sx >= 0 && sx <= 1) {
-                            deflection = -0.06 * Math.sin(sx * Math.PI) * (Cl > 0 ? Cl : 0.2) * chordLength;
-                        }
-                        const py = startY + (sx > 0 ? deflection * (1 - Math.abs(startY) / (chordLength * 0.5)) : 0);
-                        if (sx === -0.2) ctx.moveTo(px, py);
-                        else ctx.lineTo(px, py);
+                    ctx.moveTo(x * chordLength, -y * chordLength);
+                    const dt = 0.02;
+                    for (let step = 0; step < 140; step++) {
+                        if (pmInsideAirfoil(pmPts, x, y)) break;
+                        const [u, v] = pmVelocity(pm.P, pm.gamma, pm.alpha, x, y);
+                        const sp = Math.hypot(u, v) || 1;
+                        x += (u / sp) * dt; y += (v / sp) * dt;
+                        if (x > 1.4) break;
+                        ctx.lineTo(x * chordLength, -y * chordLength);
                     }
                     ctx.stroke();
-                }
+                });
             }
 
             // Draw Camber Line
